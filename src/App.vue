@@ -14,4 +14,7 @@ export default {
 </script>
 
 <style scoped lang="stylus">
+    @import "common/stylus/variabl.styl"
+    #app
+        color:$color-background
 </style>
