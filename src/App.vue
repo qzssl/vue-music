@@ -1,14 +1,16 @@
 <template>
   <div id="app">
-     hello world
+    <m-header />
+    <!--<router-link></router-link>-->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+import MHeader from 'components/m-header/m-header.vue'
 export default {
-  name: 'app',
+  name: 'App',
   components: {
-
+    MHeader
   }
 }
 </script>
