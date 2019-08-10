@@ -1,16 +1,18 @@
 <template>
   <div id="app">
     <m-header />
+    <tab></tab>
     <!--<router-link></router-link>-->
   </div>
 </template>
 
 <script type="text/ecmascript-6">
 import MHeader from 'components/m-header/m-header.vue'
+import Tab from 'components/tab/tab.vue'
 export default {
   name: 'App',
   components: {
-    MHeader
+    MHeader, Tab
   }
 }
 </script>

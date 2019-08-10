@@ -1,10 +1,9 @@
 <template>
-    <div>singer</div>
+  <div>singer</div>
 </template>
 
 <script type="text/ecmascript-6">
-    export default {}
+export default {}
 </script>
 
-<style scoped lang="stylus">
-</style>
+<style scoped lang="stylus"></style>
