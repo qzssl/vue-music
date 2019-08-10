@@ -1,7 +1,15 @@
 <template>
   <div ref="recommend" class="recommend">
-    <div ref="sliderWrapper" class="recommend-content">
-      <div class="slider-wrapper"></div>
+    <div v-if="recommend.length" ref="sliderWrapper" class="recommend-content">
+      <div class="slider-wrapper">
+        <v-slider>
+          <div v-for="(item, index) in recommend" :key="index">
+            <a :href="item.linkUrl">
+              <img :src="item.picUrl">
+            </a>
+          </div>
+        </v-slider>
+      </div>
       <div class="recommend-list">
         <h1 class="list-title">
           热门歌单推荐
@@ -14,22 +22,31 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import VSlider from '../../base/slider/slider.vue'
 //   import Scroll from 'base/scroll/scroll.vue'
   import { getRecommend } from 'api/recommend'
   import { ERR_OK } from 'api/config'
   export default {
-      created() {
-          this._getRecommend()
-      },
-      methods: {
-          _getRecommend() {
-              getRecommend().then((res) => {
-                  if (res.code === ERR_OK) {
-                      window.console.log(res)
-                  }
-              })
-          }
+    components: {
+      VSlider
+    },
+    data() {
+      return {
+        recommend: []
       }
+    },
+    created() {
+      this._getRecommend()
+    },
+    methods: {
+      _getRecommend() {
+        getRecommend().then((res) => {
+          if (res.code === ERR_OK) {
+            this.recommend = res.data.slider
+          }
+        })
+      }
+    }
   }
 </script>
 
