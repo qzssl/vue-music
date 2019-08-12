@@ -87,6 +87,7 @@ export default {
           speed: 400
         }
       })
+      // 监听滚动结束时间获取pageX
       this.slider.on('scrollEnd', () => {
         const pageIndex = this.slider.getCurrentPage().pageX
         this.currentPagrIndex = pageIndex
