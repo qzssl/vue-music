@@ -45,7 +45,6 @@
   import Loading from 'base/loading/loading'
   import { getRecommend, getDiscList } from 'api/recommend'
   import { ERR_OK } from 'api/config'
-import { setTimeout } from 'timers';
   export default {
     components: {
       VSlider,
