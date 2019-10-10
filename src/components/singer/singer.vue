@@ -1,6 +1,6 @@
 <template>
   <div class="singer">
-    <list-view :singers="singers"></list-view>
+    <list-view :data="singers"></list-view>
   </div>
 </template>
 
@@ -29,9 +29,6 @@ export default {
       getSingerList().then((res) => {
         if (res.code === ERR_OK) {
           this.singers = this._normalizeSinger(res.data.list)
-
-          window.console.log(res.data)
-          window.console.log(this._normalizeSinger(res.data.list))
         }
       })
     },
@@ -63,12 +60,14 @@ export default {
         }))
       })
       // 为了得到有序列表，需要处理map
-      const hot = []
-      const ret = []
+      const hot = [] // 热门歌手
+      const ret = [] // 剩下的歌手
       for (const key in map) {
         const val = map[key]
         if (val.title.match(/[a-zA-z]/)) {
           ret.push(val)
+        } else if (val.title === HOT_NAME) {
+          hot.push(val)
         }
       }
       ret.sort((a, b) => {
