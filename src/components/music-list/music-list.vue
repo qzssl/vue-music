@@ -3,22 +3,24 @@
     <div class="back">
       <i class="icon-back"></i>
     </div>
-    <h1 class="title" v-html="title"></h1>
-    <div class="bg-image" :style="bgStyle" ref="bgImage">
+    <h1 class="title">
+      {{ title }}
+    </h1>
+    <div ref="bgImage" class="bg-image" :style="bgStyle">
       <div class="play-wrapper">
         <div ref="playBtn">
           <i class="icon-play"></i>
           <span class="text">随机播放全部</span>
         </div>
       </div>
-      <div class="filter" ref="filter"></div>
+      <div ref="filter" class="filter"></div>
     </div>
-    <scroll :data="songs" class="list" ref="list">
+    <scroll ref="list" :data="songs" class="list">
       <div class="song-list-wrapper">
         <song-list :songs="songs"></song-list>
       </div>
     </scroll>
-    <div class="bg-layer" ref="layer"></div>
+    <div ref="layer" class="bg-layer"></div>
   </div>
 </template>
 
@@ -26,9 +28,13 @@
 import Scroll from 'base/scroll/scroll'
 import SongList from 'base/song-list/song-list'
   export default {
-    props:{
-      bgImage: { type: String, default: '' },// 头像背景图
-      songs: { type: Array, default: [] },
+    components: {
+      Scroll,
+      SongList
+    },
+    props: {
+      bgImage: { type: String, default: '' }, // 头像背景图
+      songs: { type: Array, default: () => [] },
       title: { type: String, default: '' }
     },
     computed: {
@@ -38,10 +44,6 @@ import SongList from 'base/song-list/song-list'
     },
     mounted() {
       this.$refs.list.$el.style.top = `${this.$refs.bgImage.clientHeight}px`
-    },
-    components: {
-      Scroll,
-      SongList
     }
   }
 </script>

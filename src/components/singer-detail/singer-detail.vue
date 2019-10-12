@@ -43,14 +43,14 @@ export default {
       getSingerDetail(this.singer.id).then((res) => {
         if (ERR_OK === res.code) {
           this.songs = this._normalizeSongs(res.data.list)
-          window.console.log(this.songs)
+          // window.console.log(this.songs)
         }
       })
     },
     _normalizeSongs(list) {
-      let ret = []
+      const ret = []
       list.forEach((item) => {
-        let { musicData } = item
+        const { musicData } = item
         if (musicData.songid && musicData.albummid) {
           ret.push(createSong(musicData))
         }
