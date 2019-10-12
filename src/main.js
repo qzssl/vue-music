@@ -2,6 +2,7 @@ import 'babel-polyfill'
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router/router'
+import store from './store'
 
 import fastclick from 'fastclick' // 解决300毫秒延迟
 
@@ -19,5 +20,6 @@ Vue.use(vueLazyload, {
 
 new Vue({
   router,
-  render: h => h(App)
+  render: h => h(App),
+  store
 }).$mount('#app')

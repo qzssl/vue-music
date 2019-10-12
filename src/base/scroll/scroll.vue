@@ -12,7 +12,7 @@ export default {
     probeType: { type: Number, default: 1 },
     click: { type: Boolean, default: true },
     data: { type: Array, default: null },
-    listenScroll: { type: Boolean, default: false } //监听滚动事件
+    listenScroll: { type: Boolean, default: false } // 监听滚动事件
   },
   watch: {
     data() {

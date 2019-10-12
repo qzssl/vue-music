@@ -4,7 +4,7 @@
     class="listview"
     :probe-type="probeType"
     :data="data"
-    :listenScroll="listenScroll"
+    :listen-scroll="listenScroll"
     @scroll="scroll"
   >
     <ul>
@@ -13,7 +13,7 @@
           {{ group.title }}
         </h2>
         <ul>
-          <li v-for="(item,key) in group.items" :key="key" class="list-group-item">
+          <li v-for="(item,key) in group.items" :key="key" class="list-group-item" @click="selectItem(item)">
             <img v-lazy="item.avatar" class="avatar" alt="">
             <span class="name">{{ item.name }}</span>
           </li>
@@ -58,7 +58,7 @@ export default {
       probeType: 3,
       currentIndex: 0,
       scrollY: -1, // 滚动位置
-      diff: -1,
+      diff: -1
     }
   },
   computed: {
@@ -71,12 +71,49 @@ export default {
       return this.data[this.currentIndex] ? this.data[this.currentIndex].title : ''
     }
   },
+  watch: {
+    data() {
+      setTimeout(() => {
+        this._calculateHeight()
+      }, 20)
+    },
+    scrollY(newY) {
+      const listHeight = this.listHeight
+      // 当滚动到顶部， newY>0
+      if (newY > 0) {
+        this.currentIndex = 0
+      }
+      // 在中间部分滚动
+      for (let i = 0; i < listHeight.length; i++) {
+        const height1 = listHeight[i]
+        const height2 = listHeight[i + 1]
+        if (-newY >= height1 && -newY < height2) {
+          this.currentIndex = i
+          this.diff = height2 + newY
+          return
+        }
+      }
+      // 当滚动到底部， 且-newY大于最后一个元素的上限
+      this.currentIndex = listHeight.length - 2
+    },
+    diff(newVal) {
+      const fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
+      if (this.fixedTop === fixedTop) {
+        return
+      }
+      this.fixedTop = fixedTop
+      this.$refs.fixed.style.transform = `translate3d(0, ${fixedTop}px, 0)`
+    }
+  },
   created() {
     this.touch = {} // 因为不需要观测touch变化，所以不需要写在data中
     this.listenScroll = true
     this.listHeight = []
   },
   methods: {
+    selectItem(item) {
+      this.$emit('select', item)
+    },
     onShortcutTouchStart(e) {
       const anchorIndex = getData(e.target, 'index')
       const firstTouch = e.touches[0]
@@ -101,8 +138,8 @@ export default {
       }
       if (index < 0) {
         index = 0
-      } else if (index > this.listHeight.length -2) {
-        index = this.listHeight.length -2
+      } else if (index > this.listHeight.length - 2) {
+        index = this.listHeight.length - 2
       }
       this.scrollY = -this.listHeight[index]
       this.$refs.listView.scrollToElement(this.$refs.listGroup[index], 0)
@@ -113,44 +150,10 @@ export default {
       let height = 0
       this.listHeight.push(height)
       for (let i = 0; i < list.length; i++) {
-        let item = list[i]
+        const item = list[i]
         height += item.clientHeight
         this.listHeight.push(height)
       }
-    },
-  },
-  watch: {
-    data() {
-      setTimeout(() => {
-        this._calculateHeight()
-      }, 20)
-    },
-    scrollY(newY) {
-      const listHeight = this.listHeight
-      // 当滚动到顶部， newY>0
-      if (newY > 0) {
-        this.currentIndex = 0
-      }
-      // 在中间部分滚动
-      for (let i = 0; i < listHeight.length; i++) {
-        let height1 = listHeight[i]
-        let height2 = listHeight[i + 1]
-        if (-newY >= height1 && -newY < height2) {
-          this.currentIndex = i
-          this.diff = height2 + newY
-          return
-        }
-      }
-      // 当滚动到底部， 且-newY大于最后一个元素的上限
-      this.currentIndex = listHeight.length - 2
-    },
-    diff(newVal) {
-      let fixedTop = (newVal > 0 && newVal < TITLE_HEIGHT) ? newVal - TITLE_HEIGHT : 0
-      if (this.fixedTop === fixedTop) {
-        return
-      }
-      this.fixedTop = fixedTop
-      this.$refs.fixed.style.transform = `translate3d(0, ${fixedTop}px, 0)`
     }
   }
 }
